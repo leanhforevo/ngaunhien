@@ -2,7 +2,6 @@ import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   TouchableOpacity,
   Image,
@@ -18,6 +17,7 @@ import { getStatusBarHeight, getBottomSpace } from "react-native-iphone-x-helper
 import { useIsFocused } from "@react-navigation/native";
 import Utils from "../Utils/utils";
 import { TopAd, BottomAd } from "../Component/AdBanner";
+import { Text, GlassCard } from "../Component/Common";
 
 const keyLocalConfigs = "@!keyLocalConfigs";
 
@@ -210,16 +210,16 @@ const App = ({ navigation }) => {
       
       {/* Controls row (Language and Sound toggle) */}
       <View style={styles.controlsRow}>
-        <TouchableOpacity
+        <GlassCard
           style={styles.controlButton}
           onPress={() => setLangModalVisible(true)}
           activeOpacity={0.7}
         >
           <Text style={{ fontSize: 16 }}>{currentLangObj.flag}</Text>
-          <Text style={styles.controlText}>{currentLangObj.label}</Text>
-        </TouchableOpacity>
+          <Text bold style={styles.controlText}>{currentLangObj.label}</Text>
+        </GlassCard>
 
-        <TouchableOpacity
+        <GlassCard
           style={styles.controlButton}
           onPress={toggleSound}
           activeOpacity={0.7}
@@ -230,16 +230,16 @@ const App = ({ navigation }) => {
             size={20}
             color={soundEnabled ? "#1E293B" : "#94A3B8"}
           />
-          <Text style={[styles.controlText, !soundEnabled && { color: "#94A3B8" }]}>
+          <Text bold style={[styles.controlText, !soundEnabled && { color: "#94A3B8" }]}>
             {soundEnabled ? t.soundOn : t.soundOff}
           </Text>
-        </TouchableOpacity>
+        </GlassCard>
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.gridContainer}>
           {gameModes.map((item, idx) => (
-            <TouchableOpacity
+            <GlassCard
               key={idx}
               style={styles.gridItem}
               onPress={() => navigation.navigate(item.screen)}
@@ -251,8 +251,8 @@ const App = ({ navigation }) => {
                 size={34}
                 color="#1E293B"
               />
-              <Text style={styles.gridItemText}>{getModeName(item)}</Text>
-            </TouchableOpacity>
+              <Text bold style={styles.gridItemText}>{getModeName(item)}</Text>
+            </GlassCard>
           ))}
         </View>
       </ScrollView>
@@ -268,7 +268,7 @@ const App = ({ navigation }) => {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{t.langTitle}</Text>
+              <Text size={18} bold>{t.langTitle}</Text>
               <TouchableOpacity onPress={() => setLangModalVisible(false)}>
                 <Icon name="close-outline" type="ionicon" color="#1E293B" />
               </TouchableOpacity>
@@ -286,6 +286,8 @@ const App = ({ navigation }) => {
                   <View style={styles.langItemLeft}>
                     <Text style={styles.langFlag}>{item.flag}</Text>
                     <Text
+                      size={16}
+                      bold={item.code === lang}
                       style={[
                         styles.langLabel,
                         item.code === lang && styles.langLabelActive,
@@ -335,7 +337,6 @@ const styles = StyleSheet.create({
   },
   controlText: {
     fontSize: 12,
-    fontWeight: "bold",
     fontFamily: "Arial",
     color: "#1E293B",
     marginLeft: 5,
@@ -371,7 +372,6 @@ const styles = StyleSheet.create({
   gridItemText: {
     marginTop: 8,
     fontSize: 14,
-    fontWeight: "bold",
     fontFamily: "Arial",
     color: "#1E293B",
   },
@@ -394,12 +394,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
   },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    fontFamily: "Arial",
-    color: "#1E293B",
-  },
   langItemRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -420,7 +414,6 @@ const styles = StyleSheet.create({
     fontFamily: "Arial",
   },
   langLabelActive: {
-    fontWeight: "bold",
     color: "#3B82F6",
   },
   separator: {

@@ -1,11 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text as RNText, View, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 
 /**
  * Customized Text component with standard font family, default color, and typography variations.
  */
-export const AppText = ({
+export const Text = ({
   style,
   children,
   bold,
@@ -26,16 +26,28 @@ export const AppText = ({
   ];
 
   return (
-    <Text style={textStyles} {...props}>
+    <RNText style={textStyles} {...props}>
       {children}
-    </Text>
+    </RNText>
   );
 };
 
 /**
  * Glassmorphic container Card component with unified padding, border, and shadows.
  */
-export const GlassCard = ({ style, children, ...props }) => {
+export const GlassCard = ({ style, children, onPress, activeOpacity = 0.7, ...props }) => {
+  if (onPress) {
+    return (
+      <TouchableOpacity
+        style={[styles.glassCard, style]}
+        onPress={onPress}
+        activeOpacity={activeOpacity}
+        {...props}
+      >
+        {children}
+      </TouchableOpacity>
+    );
+  }
   return (
     <View style={[styles.glassCard, style]} {...props}>
       {children}

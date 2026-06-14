@@ -2,7 +2,6 @@ import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useRef } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   TouchableOpacity,
   Image,
@@ -13,10 +12,11 @@ import {
   Platform,
 } from "react-native";
 import { useAudioPlayer } from "expo-audio";
-import { Icon } from "react-native-elements";
-import { getStatusBarHeight, getBottomSpace } from "react-native-iphone-x-helper-2";
+import { getBottomSpace } from "react-native-iphone-x-helper-2";
 import Utils from "../Utils/utils";
+import Header from "../Component/Header";
 import { TopAd, BottomAd } from "../Component/AdBanner";
+import { Text, GlassCard, AppIconButton } from "../Component/Common";
 
 const keyLocalConfigs = "@!keyLocalConfigs";
 const keyLocalHistoryCoin = "@!cacheDataHistoryCoin";
@@ -137,18 +137,7 @@ export default function CoinToss({ navigation }) {
         style={{ width: "100%", height: "100%", position: "absolute" }}
         source={require("../../assets/background.jpeg")}
       />
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.pop()}
-        >
-          <Icon name="arrow-back-circle-outline" type="ionicon" color="#1E293B" />
-        </TouchableOpacity>
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>Tung đồng xu</Text>
-        </View>
-        <View style={styles.backButton} />
-      </View>
+      <Header title="Tung đồng xu" navigation={navigation} />
 
       <TopAd containerStyle={{ marginTop: 10, alignItems: 'center' }} />
 
@@ -168,7 +157,7 @@ export default function CoinToss({ navigation }) {
               disabled={isFlipping}
               style={styles.coin}
             >
-              <Text style={styles.coinText}>
+              <Text bold size={28} color="#B8860B" style={styles.coinText}>
                 {isFlipping ? "?" : result === "Tap to Flip" ? "$" : result}
               </Text>
             </TouchableOpacity>
@@ -196,23 +185,19 @@ export default function CoinToss({ navigation }) {
           />
         </View>
 
-        <Text style={styles.resultLabel}>
+        <Text bold size={24} style={styles.resultLabel}>
           {isFlipping ? "Đang tung..." : result}
         </Text>
       </View>
 
       <View style={styles.toolbarContainer}>
-        <View style={styles.containerGroupIcon}>
-          <TouchableOpacity style={styles.containerIcon} onPress={tossCoin}>
-            <Icon name="play-outline" type="ionicon" color="#1E293B" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.containerIcon}
+        <GlassCard style={styles.containerGroupIcon}>
+          <AppIconButton name="play-outline" onPress={tossCoin} />
+          <AppIconButton
+            name="clipboard-outline"
             onPress={() => setHistoryVisible(true)}
-          >
-            <Icon name="clipboard-outline" type="ionicon" color="#1E293B" />
-          </TouchableOpacity>
-        </View>
+          />
+        </GlassCard>
       </View>
 
       <BottomAd />
@@ -227,10 +212,8 @@ export default function CoinToss({ navigation }) {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Lịch sử tung xu</Text>
-              <TouchableOpacity onPress={() => setHistoryVisible(false)}>
-                <Icon name="close-outline" type="ionicon" color="#1E293B" />
-              </TouchableOpacity>
+              <Text size={18} bold>Lịch sử tung xu</Text>
+              <AppIconButton name="close-outline" onPress={() => setHistoryVisible(false)} />
             </View>
 
             {history.length > 0 ? (
@@ -240,7 +223,7 @@ export default function CoinToss({ navigation }) {
                 renderItem={({ item, index }) => (
                   <View style={styles.historyRow}>
                     <Text style={styles.historyIndex}>{history.length - index}.</Text>
-                    <Text style={styles.historyResult}>{item.title}</Text>
+                    <Text bold style={styles.historyResult}>{item.title}</Text>
                     <Text style={styles.historyTime}>
                       {new Date(item.time).toLocaleTimeString()}
                     </Text>
@@ -264,29 +247,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-  },
-  header: {
-    height: 50,
-    marginTop: getStatusBarHeight(true),
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  backButton: {
-    height: 50,
-    width: 50,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  titleContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  titleText: {
-    fontSize: 18,
-    fontWeight: "500",
-    color: "#1E293B",
-    fontFamily: "Arial",
   },
   content: {
     flex: 1,
@@ -322,16 +282,10 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   coinText: {
-    fontSize: 28,
-    fontWeight: "bold",
-    fontFamily: "Arial",
-    color: "#B8860B",
+    textAlign: "center",
   },
   resultLabel: {
     marginTop: 30,
-    fontSize: 24,
-    fontWeight: "bold",
-    fontFamily: "Arial",
     color: "#1E293B",
   },
   toolbarContainer: {
@@ -341,17 +295,8 @@ const styles = StyleSheet.create({
   containerGroupIcon: {
     flexDirection: "row",
     paddingHorizontal: 5,
-    backgroundColor: "rgba(255, 255, 255, 0.4)",
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.5)",
     borderRadius: 35,
     overflow: "hidden",
-  },
-  containerIcon: {
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    padding: 15,
   },
   modalOverlay: {
     flex: 1,
@@ -372,12 +317,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
   },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    fontFamily: "Arial",
-    color: "#1E293B",
-  },
   historyRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -385,21 +324,16 @@ const styles = StyleSheet.create({
   },
   historyIndex: {
     width: 30,
-    fontSize: 14,
     color: "rgba(30,41,59,0.5)",
-    fontFamily: "Arial",
   },
   historyResult: {
     flex: 1,
     fontSize: 16,
-    fontWeight: "600",
     color: "#1E293B",
-    fontFamily: "Arial",
   },
   historyTime: {
     fontSize: 12,
     color: "rgba(30,41,59,0.6)",
-    fontFamily: "Arial",
   },
   separator: {
     height: 1,
@@ -412,6 +346,5 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 14,
     color: "rgba(30,41,59,0.5)",
-    fontFamily: "Arial",
   },
 });

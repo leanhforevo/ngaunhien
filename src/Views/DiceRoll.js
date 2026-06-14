@@ -2,7 +2,6 @@ import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useRef } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   TouchableOpacity,
   Image,
@@ -13,10 +12,11 @@ import {
   Platform,
 } from "react-native";
 import { useAudioPlayer } from "expo-audio";
-import { Icon } from "react-native-elements";
-import { getStatusBarHeight, getBottomSpace } from "react-native-iphone-x-helper-2";
+import { getBottomSpace } from "react-native-iphone-x-helper-2";
 import Utils from "../Utils/utils";
+import Header from "../Component/Header";
 import { TopAd, BottomAd } from "../Component/AdBanner";
+import { Text, GlassCard, AppIconButton } from "../Component/Common";
 
 const keyLocalConfigs = "@!keyLocalConfigs";
 const keyLocalHistoryDice = "@!cacheDataHistoryDice";
@@ -257,79 +257,18 @@ export default function DiceRoll({ navigation }) {
     setDiceValues(Array(count).fill(1));
   };
 
-  const renderDiceDots = (val) => {
-    const dotPositions = {
-      1: [{ top: "40%", left: "40%" }],
-      2: [
-        { top: "15%", left: "15%" },
-        { bottom: "15%", right: "15%" },
-      ],
-      3: [
-        { top: "15%", left: "15%" },
-        { top: "40%", left: "40%" },
-        { bottom: "15%", right: "15%" },
-      ],
-      4: [
-        { top: "15%", left: "15%" },
-        { top: "15%", right: "15%" },
-        { bottom: "15%", left: "15%" },
-        { bottom: "15%", right: "15%" },
-      ],
-      5: [
-        { top: "15%", left: "15%" },
-        { top: "15%", right: "15%" },
-        { top: "40%", left: "40%" },
-        { bottom: "15%", left: "15%" },
-        { bottom: "15%", right: "15%" },
-      ],
-      6: [
-        { top: "15%", left: "15%" },
-        { top: "15%", right: "15%" },
-        { top: "40%", left: "15%" },
-        { top: "40%", right: "15%" },
-        { bottom: "15%", left: "15%" },
-        { bottom: "15%", right: "15%" },
-      ],
-    };
-    return (
-      <View style={styles.diceFace}>
-        {dotPositions[val].map((pos, i) => (
-          <View
-            key={i}
-            style={[
-              styles.dot,
-              pos,
-              { backgroundColor: val === 1 || val === 4 ? "#DC2626" : "#1E293B" },
-            ]}
-          />
-        ))}
-      </View>
-    );
-  };
-
   return (
     <View style={styles.container}>
       <Image
         style={{ width: "100%", height: "100%", position: "absolute" }}
         source={require("../../assets/background.jpeg")}
       />
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.pop()}
-        >
-          <Icon name="arrow-back-circle-outline" type="ionicon" color="#1E293B" />
-        </TouchableOpacity>
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>Lắc xúc xắc</Text>
-        </View>
-        <View style={styles.backButton} />
-      </View>
+      <Header title="Lắc xúc xắc" navigation={navigation} />
 
       <TopAd containerStyle={{ marginTop: 10, alignItems: 'center' }} />
 
       {/* Quantity Select Tab */}
-      <View style={styles.tabContainer}>
+      <GlassCard style={styles.tabContainer}>
         {[1, 2, 3].map((count) => (
           <TouchableOpacity
             key={count}
@@ -341,6 +280,7 @@ export default function DiceRoll({ navigation }) {
             disabled={isRolling}
           >
             <Text
+              bold={diceCount === count}
               style={[
                 styles.tabText,
                 diceCount === count && styles.tabTextActive,
@@ -350,7 +290,7 @@ export default function DiceRoll({ navigation }) {
             </Text>
           </TouchableOpacity>
         ))}
-      </View>
+      </GlassCard>
 
       <View style={styles.content}>
         {/* Shaking Container */}
@@ -371,23 +311,19 @@ export default function DiceRoll({ navigation }) {
         </Animated.View>
 
         {/* Sum Result */}
-        <Text style={[styles.resultLabel, { opacity: isRolling ? 0 : 1 }]}>
+        <Text bold size={20} style={[styles.resultLabel, { opacity: isRolling ? 0 : 1 }]}>
           Tổng điểm: {diceValues.reduce((a, b) => a + b, 0)}
         </Text>
       </View>
 
       <View style={styles.toolbarContainer}>
-        <View style={styles.containerGroupIcon}>
-          <TouchableOpacity style={styles.containerIcon} onPress={rollDice}>
-            <Icon name="play-outline" type="ionicon" color="#1E293B" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.containerIcon}
+        <GlassCard style={styles.containerGroupIcon}>
+          <AppIconButton name="play-outline" onPress={rollDice} />
+          <AppIconButton
+            name="clipboard-outline"
             onPress={() => setHistoryVisible(true)}
-          >
-            <Icon name="clipboard-outline" type="ionicon" color="#1E293B" />
-          </TouchableOpacity>
-        </View>
+          />
+        </GlassCard>
       </View>
 
       <BottomAd containerStyle={{ height: 260, marginBottom: getBottomSpace() || 10, justifyContent: 'center', alignItems: 'center' }} />
@@ -402,10 +338,8 @@ export default function DiceRoll({ navigation }) {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Lịch sử lắc xúc xắc</Text>
-              <TouchableOpacity onPress={() => setHistoryVisible(false)}>
-                <Icon name="close-outline" type="ionicon" color="#1E293B" />
-              </TouchableOpacity>
+              <Text size={18} bold>Lịch sử lắc xúc xắc</Text>
+              <AppIconButton name="close-outline" onPress={() => setHistoryVisible(false)} />
             </View>
 
             {history.length > 0 ? (
@@ -415,7 +349,7 @@ export default function DiceRoll({ navigation }) {
                 renderItem={({ item, index }) => (
                   <View style={styles.historyRow}>
                     <Text style={styles.historyIndex}>{history.length - index}.</Text>
-                    <Text style={styles.historyResult}>{item.title}</Text>
+                    <Text bold style={styles.historyResult}>{item.title}</Text>
                     <Text style={styles.historyTime}>
                       {new Date(item.time).toLocaleTimeString()}
                     </Text>
@@ -439,29 +373,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-  },
-  header: {
-    height: 50,
-    marginTop: getStatusBarHeight(true),
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  backButton: {
-    height: 50,
-    width: 50,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  titleContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  titleText: {
-    fontSize: 18,
-    fontWeight: "500",
-    color: "#1E293B",
-    fontFamily: "Arial",
   },
   content: {
     flex: 1,
@@ -492,12 +403,9 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontSize: 13,
-    fontWeight: "500",
     color: "rgba(30,41,59,0.7)",
-    fontFamily: "Arial",
   },
   tabTextActive: {
-    fontWeight: "bold",
     color: "#1E293B",
   },
   diceContainer: {
@@ -505,21 +413,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     minHeight: 100,
-  },
-  diceFace: {
-    width: 76,
-    height: 76,
-    borderRadius: 14,
-    backgroundColor: "#FFFFFF",
-    borderWidth: 2,
-    borderColor: "#E2E8F0",
-    position: "relative",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    marginHorizontal: 8,
   },
   dot: {
     position: "absolute",
@@ -558,9 +451,6 @@ const styles = StyleSheet.create({
   },
   resultLabel: {
     marginTop: 40,
-    fontSize: 20,
-    fontWeight: "bold",
-    fontFamily: "Arial",
     color: "#1E293B",
   },
   toolbarContainer: {
@@ -570,17 +460,8 @@ const styles = StyleSheet.create({
   containerGroupIcon: {
     flexDirection: "row",
     paddingHorizontal: 5,
-    backgroundColor: "rgba(255, 255, 255, 0.4)",
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.5)",
     borderRadius: 35,
     overflow: "hidden",
-  },
-  containerIcon: {
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    padding: 15,
   },
   modalOverlay: {
     flex: 1,
@@ -601,12 +482,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
   },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    fontFamily: "Arial",
-    color: "#1E293B",
-  },
   historyRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -614,21 +489,16 @@ const styles = StyleSheet.create({
   },
   historyIndex: {
     width: 30,
-    fontSize: 14,
     color: "rgba(30,41,59,0.5)",
-    fontFamily: "Arial",
   },
   historyResult: {
     flex: 1,
     fontSize: 16,
-    fontWeight: "600",
     color: "#1E293B",
-    fontFamily: "Arial",
   },
   historyTime: {
     fontSize: 12,
     color: "rgba(30,41,59,0.6)",
-    fontFamily: "Arial",
   },
   separator: {
     height: 1,
@@ -641,6 +511,5 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 14,
     color: "rgba(30,41,59,0.5)",
-    fontFamily: "Arial",
   },
 });

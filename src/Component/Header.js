@@ -1,56 +1,35 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState, useRef } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  Switch,
-  FlatList,
-  TextInput,
-  ScrollView,
-  LayoutAnimation,
-  Platform,
-} from "react-native";
-import { Icon } from "react-native-elements";
-import {
-  getBottomSpace,
-  getStatusBarHeight,
-} from "react-native-iphone-x-helper-2";
-import { navigationRef, pop } from "../Utils/RootNavigation";
-export default function App({ title }) {
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { getStatusBarHeight } from "react-native-iphone-x-helper-2";
+import { pop } from "../Utils/RootNavigation";
+import { Text, AppIconButton } from "./Common";
+
+export default function Header({ title, onBack, navigation }) {
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else if (navigation) {
+      navigation.pop();
+    } else {
+      pop();
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={{ height: getStatusBarHeight(true) }} />
       <View style={{ height: 50, flexDirection: "row", alignItems: "center" }}>
-        <TouchableOpacity
+        <AppIconButton
+          name="arrow-back-circle-outline"
+          onPress={handleBack}
           style={styles.containerHeaderIconLeft}
-          onPress={() => {
-            pop();
-          }}
-        >
-          <Icon
-            name="arrow-back-circle-outline"
-            type="ionicon"
-            color="#1E293B"
-          />
-        </TouchableOpacity>
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: "500",
-              color: "#1E293B",
-              fontFamily: "Arial",
-            }}
-          >
+        />
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <Text size={18} medium style={styles.titleText}>
             {title || ""}
           </Text>
         </View>
-        <View style={styles.containerHeaderIconRight}></View>
+        <View style={styles.containerHeaderIconRight} />
       </View>
     </View>
   );
@@ -74,5 +53,8 @@ const styles = StyleSheet.create({
   containerHeaderIconRight: {
     height: 50,
     width: 50,
+  },
+  titleText: {
+    color: "#1E293B",
   },
 });
