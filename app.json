@@ -56,17 +56,7 @@
         "projectId": "f493a012-2d49-4c10-b5bc-442df2e25829"
       }
     },
-    "owner": "leanhforevo",
-    "plugins": [
-      [
-        "expo-build-properties",
-        {
-          "ios": {
-            "useFrameworks": "static"
-          }
-        }
-      ]
-    ]
+    "owner": "leanhforevo"
   },
   "react-native-google-mobile-ads": {
     "android_app_id": "ca-app-pub-4249582158718282~9843889717",
