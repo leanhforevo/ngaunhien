@@ -1,5 +1,11 @@
 import React from "react";
-import { ImageBackground, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const quickActions = [
@@ -53,13 +59,19 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.footer}>
           <Pressable
             onPress={() => navigation.navigate("History")}
-            style={({ pressed }) => [styles.footerButton, pressed && styles.footerButtonPressed]}
+            style={({ pressed }) => [
+              styles.footerButton,
+              pressed && styles.footerButtonPressed,
+            ]}
           >
             <Text style={styles.footerButtonText}>Xem lịch sử</Text>
           </Pressable>
           <Pressable
             onPress={() => navigation.navigate("Settings")}
-            style={({ pressed }) => [styles.footerButtonSecondary, pressed && styles.footerButtonPressed]}
+            style={({ pressed }) => [
+              styles.footerButtonSecondary,
+              pressed && styles.footerButtonPressed,
+            ]}
           >
             <Text style={styles.footerButtonSecondaryText}>Cài đặt</Text>
           </Pressable>
@@ -70,9 +82,7 @@ export default function HomeScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-  },
+  background: { flex: 1 },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(10, 14, 25, 0.72)",
@@ -83,9 +93,7 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
     justifyContent: "space-between",
   },
-  header: {
-    paddingTop: 12,
-  },
+  header: { paddingTop: 12 },
   kicker: {
     color: "#A5B4FC",
     fontSize: 12,
@@ -107,9 +115,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
     maxWidth: 330,
   },
-  grid: {
-    gap: 14,
-  },
+  grid: { gap: 14 },
   card: {
     borderRadius: 24,
     padding: 20,
@@ -117,10 +123,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.14)",
   },
-  cardPressed: {
-    transform: [{ scale: 0.98 }],
-    opacity: 0.9,
-  },
+  cardPressed: { transform: [{ scale: 0.98 }], opacity: 0.9 },
   cardTitle: {
     color: "#FFFFFF",
     fontSize: 20,
@@ -131,10 +134,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
     fontSize: 14,
   },
-  footer: {
-    flexDirection: "row",
-    gap: 12,
-  },
+  footer: { flexDirection: "row", gap: 12 },
   footerButton: {
     flex: 1,
     backgroundColor: "#6366F1",
@@ -151,15 +151,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.14)",
   },
-  footerButtonPressed: {
-    opacity: 0.88,
-  },
-  footerButtonText: {
-    color: "#FFFFFF",
-    fontWeight: "700",
-  },
-  footerButtonSecondaryText: {
-    color: "#FFFFFF",
-    fontWeight: "700",
-  },
+  footerButtonPressed: { opacity: 0.88 },
+  footerButtonText: { color: "#FFFFFF", fontWeight: "700" },
+  footerButtonSecondaryText: { color: "#FFFFFF", fontWeight: "700" },
 });

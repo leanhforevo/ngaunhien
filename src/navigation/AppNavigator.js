@@ -1,15 +1,16 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import HomeScreen from "./Views/Home";
-import SettingsScreen from "./Views/Settings";
-import HistoryScreen from "./Views/History";
-import HistoryNumberScreen from "./Views/HistoryNumber";
-import WheelSpinningScreen from "./Views/WheelSpinning";
-import NumberRandomScreen from "./Views/NumberRandom";
+
+import HomeScreen from "../screens/HomeScreen";
+import SettingsScreen from "../screens/SettingsScreen";
+import HistoryScreen from "../screens/HistoryScreen";
+import HistoryNumberScreen from "../screens/HistoryNumberScreen";
+import WheelSpinningScreen from "../screens/WheelSpinningScreen";
+import NumberRandomScreen from "../screens/NumberRandomScreen";
 
 const Stack = createStackNavigator();
 
-function Router() {
+export default function AppNavigator() {
   return (
     <Stack.Navigator
       initialRouteName="Home"
@@ -24,5 +25,3 @@ function Router() {
     </Stack.Navigator>
   );
 }
-
-export default Router;

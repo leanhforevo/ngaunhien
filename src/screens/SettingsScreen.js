@@ -19,11 +19,7 @@ export default function SettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#0B1020",
-  },
+  container: { flex: 1, padding: 20, backgroundColor: "#0B1020" },
   title: {
     color: "#fff",
     fontSize: 28,
@@ -36,10 +32,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 12,
   },
-  label: {
-    color: "rgba(255,255,255,0.7)",
-    fontSize: 13,
-  },
+  label: { color: "rgba(255,255,255,0.7)", fontSize: 13 },
   value: {
     color: "#fff",
     fontSize: 16,

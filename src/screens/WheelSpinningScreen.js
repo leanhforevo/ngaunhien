@@ -14,11 +14,7 @@ export default function WheelSpinningScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#0B1020",
-  },
+  container: { flex: 1, padding: 20, backgroundColor: "#0B1020" },
   card: {
     flex: 1,
     justifyContent: "center",
@@ -33,7 +29,5 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     marginBottom: 8,
   },
-  text: {
-    color: "rgba(255,255,255,0.72)",
-  },
+  text: { color: "rgba(255,255,255,0.72)" },
 });

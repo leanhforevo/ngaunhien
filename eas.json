@@ -1,42 +1,37 @@
 {
+  "cli": {
+    "version": ">= 13.0.0",
+    "promptToConfigurePushNotifications": false
+  },
   "build": {
-    "master": {
-      "releaseChannel": "prod-v1"
-    },
-    "staging": {
-      "releaseChannel": "staging"
-    },
-    "development-simulator": {
+    "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
       "ios": {
         "simulator": true
       }
     },
     "preview": {
+      "distribution": "internal",
       "android": {
         "buildType": "apk"
-      }
+      },
+      "channel": "staging"
     },
-    "preview2": {
-      "android": {
-        "gradleCommand": ":app:assembleRelease"
-      }
-    },
-    "preview3": {
-      "developmentClient": true
+    "production": {
+      "channel": "prod-v1"
     }
   },
   "submit": {
-    "master": {
+    "production": {
       "android": {},
       "ios": {
         "appleId": "leanhforevo@gmail.com",
         "appleTeamId": "G8ZLW97GRP"
       }
     }
-  },
-  "cli": {
-    "promptToConfigurePushNotifications": false
   }
 }

@@ -5,26 +5,43 @@
     "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "newArchEnabled": true
+          },
+          "ios": {
+            "newArchEnabled": true,
+            "useFrameworks": "static"
+          }
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ]
+    ],
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "url": "https://u.expo.dev/3289be1b-8739-422d-8f12-5d65873ddd8c"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.nokey.random",
-      "buildNumber": "1.0.1",
+      "buildNumber": "1.0.2",
       "config": {
         "usesNonExemptEncryption": false
       }
     },
     "android": {
       "package": "com.nokey.random",
-      "versionCode": 4,
+      "versionCode": 5,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
