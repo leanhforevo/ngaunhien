@@ -11,6 +11,7 @@ import {
   TextInput,
   ScrollView,
   LayoutAnimation,
+  Platform,
 } from "react-native";
 import { Icon } from "react-native-elements";
 import KeyboardSpacer from "../Component/KeyboardSpacer";
@@ -101,61 +102,112 @@ export default function App({ navigation, route }) {
       <View style={{ height: getStatusBarHeight(true) }} />
       <View style={{ height: 50, flexDirection: "row", alignItems: "center" }}>
         <TouchableOpacity
-          style={styles.containerIcon}
+          style={styles.containerHeaderIconLeft}
           onPress={() => navigation.pop()}
         >
           <Icon
             name="arrow-back-circle-outline"
             type="ionicon"
-            color="#FFF"
+            color="#1E293B"
           />
         </TouchableOpacity>
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <Text style={{ fontSize: 18, fontWeight: "500", color: "#FFF" }}>Cài đặt</Text>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "500",
+              color: "#1E293B",
+              fontFamily: "Arial",
+            }}
+          >
+            Cài đặt
+          </Text>
         </View>
-        <View style={styles.containerIcon}></View>
+        <View style={styles.containerHeaderIconRight}></View>
       </View>
 
       <ScrollView
         ref={refScroll}
-        contentContainerStyle={{ paddingBottom: getBottomSpace() || 15 }}
+        contentContainerStyle={{
+          paddingTop: 30,
+          paddingBottom: getBottomSpace() || 15,
+        }}
       >
-        <View style={{ padding: 15 }}>
-          <Text style={{ fontSize: 18, fontWeight: "500", color: "#FFF" }}>Cài đặt</Text>
+        <View style={{ padding: 15, paddingTop: 15 }}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "500",
+              color: "#1E293B",
+              fontFamily: "Arial",
+              marginBottom: 8,
+            }}
+          >
+            Âm thanh
+          </Text>
           <View style={styles.containerGroup}>
             <View style={styles.containerRow}>
-              <Text style={{ flex: 1, fontSize: 15, fontWeight: "500", color: "#FFF" }}>
-                Âm thanh
+              <Text
+                style={{
+                  flex: 1,
+                  fontSize: 15,
+                  fontWeight: "500",
+                  color: "#1E293B",
+                  fontFamily: "Arial",
+                }}
+              >
+                Hiệu ứng âm thanh
               </Text>
-              <Switch
+              <View style={{height:'100%',justifyContent:'center'}}>
+<Switch
                 trackColor={{ false: "#3e3e3e", true: "#81b0ff" }}
                 thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={_evtPressedSound}
                 value={isEnabled}
+                style={{ transform: [{ scaleX: 0.85 }, { scaleY: 0.85 }] }}
               />
+              </View>
             </View>
           </View>
         </View>
         <View style={{ padding: 15 }}>
-          <Text style={{ fontSize: 18, fontWeight: "500", color: "#FFF" }}> Danh sách</Text>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "500",
+              color: "#1E293B",
+              fontFamily: "Arial",
+              marginBottom: 8,
+            }}
+          >
+            Danh sách
+          </Text>
           <View style={styles.containerGroup}>
             {arrData.map((item, index) => (
               <View key={`itemList${index}`}>
-                <View style={styles.containerRow}>
-                  <Text style={{ flex: 1, fontSize: 15, fontWeight: "500", color: "#FFF" }}>
+                <View style={[styles.containerRow, { paddingRight: 0 }]}>
+                  <Text
+                    style={{
+                      flex: 1,
+                      fontSize: 15,
+                      fontWeight: "500",
+                      color: "#1E293B",
+                      fontFamily: "Arial",
+                    }}
+                  >
                     {index + 1 + ". " + item}
                   </Text>
                   <TouchableOpacity
-                    style={styles.containerIcon}
+                    style={styles.containerRowButtonRight}
                     onPress={() => _evtRemove(index)}
                   >
                     <Icon
                       name="close-circle-outline"
                       type="ionicon"
-                      color="#FFF"
+                      color="#1E293B"
                     />
                   </TouchableOpacity>
                 </View>
@@ -164,7 +216,7 @@ export default function App({ navigation, route }) {
                     style={{
                       marginHorizontal: 15,
                       height: StyleSheet.hairlineWidth,
-                      backgroundColor: "rgba(255,255,255,0.12)",
+                      backgroundColor: "rgba(0,0,0,0.1)",
                     }}
                   />
                 )}
@@ -172,34 +224,69 @@ export default function App({ navigation, route }) {
             ))}
 
             {showAdd ? (
-              <View style={styles.containerBTNAdd}>
+              <View
+                style={[
+                  styles.containerRow,
+                  {
+                    paddingRight: 0,
+                    borderTopWidth: StyleSheet.hairlineWidth,
+                    borderTopColor: "rgba(0,0,0,0.1)",
+                  },
+                ]}
+              >
                 <TextInput
                   ref={refTxt}
-                  style={{ flex: 1, color: "#FFF" }}
+                  style={{
+                    flex: 1,
+                    color: "#1E293B",
+                    fontSize: 15,
+                    height: "100%",
+                    fontFamily: "Arial",
+                  }}
                   placeholder={"Nhập nội dung"}
-                  placeholderTextColor="rgba(255,255,255,0.4)"
+                  placeholderTextColor="rgba(30,41,59,0.4)"
                   autoCorrect={false}
                   returnKeyType={"done"}
                   value={txtAdd}
                   onChangeText={(txt) => settxtAdd(txt)}
                   onSubmitEditing={_evtSubmit}
                 />
+                <TouchableOpacity
+                  style={styles.containerRowButtonRight}
+                  onPress={_evtSubmit}
+                >
+                  <Icon
+                    name="checkmark-circle-outline"
+                    type="ionicon"
+                    color="#1E293B"
+                  />
+                </TouchableOpacity>
               </View>
             ) : (
               <TouchableOpacity
-                style={{
-                  ...styles.containerRow,
-                  borderTopWidth: StyleSheet.hairlineWidth,
-                  borderTopColor: "rgba(255,255,255,0.12)",
-                  justifyContent: "center",
-                }}
+                style={[
+                  styles.containerRow,
+                  {
+                    paddingRight: 0,
+                    borderTopWidth: StyleSheet.hairlineWidth,
+                    borderTopColor: "rgba(0,0,0,0.1)",
+                  },
+                ]}
                 onPress={_evtShowAdd}
               >
-                <Text style={{ fontSize: 15, fontWeight: "500", color: "#FFF" }}>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontSize: 15,
+                    fontWeight: "500",
+                    color: "#1E293B",
+                    fontFamily: "Arial",
+                  }}
+                >
                   Thêm mới
                 </Text>
-                <View style={styles.containerIcon}>
-                  <Icon name="add-circle-outline" type="ionicon" color="#FFF" />
+                <View style={styles.containerRowButtonRight}>
+                  <Icon name="add-circle-outline" type="ionicon" color="#1E293B" />
                 </View>
               </TouchableOpacity>
             )}
@@ -216,35 +303,36 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  containerIcon: {
+  containerHeaderIconLeft: {
     height: 50,
     width: 50,
     justifyContent: "center",
     alignItems: "center",
   },
+  containerHeaderIconRight: {
+    height: 50,
+    width: 50,
+  },
   containerGroup: {
-    backgroundColor: "rgba(255,255,255,0.08)",
+    backgroundColor: "rgba(255, 255, 255, 0.4)",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.12)",
-    marginTop: 10,
+    borderColor: "rgba(255, 255, 255, 0.5)",
+    marginTop: 5,
   },
   containerRow: {
-    height: 50,
+    height: 60,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
     borderRadius: 10,
   },
-  containerBTNAdd: {
-    height: 50,
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 15,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.12)",
-    marginHorizontal: 10,
-    marginBottom: 10,
+  containerRowButtonRight: {
+    height: 60,
+    width: 50,
+    justifyContent: "center",
+    alignItems: "flex-end",
+    paddingRight: 15,
   },
 });

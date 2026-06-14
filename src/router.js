@@ -12,6 +12,11 @@ import HistoryNumberScreen from "./Views/HistoryNumber";
 
 import WheelSpinningScreen from "./Views/WheelSpinning";
 import NumberRandomScreen from "./Views/NumberRandom";
+import CoinTossScreen from "./Views/CoinToss";
+import DiceRollScreen from "./Views/DiceRoll";
+import CardDrawScreen from "./Views/CardDraw";
+import LuckyDrawScreen from "./Views/LuckyDraw";
+
 const Stack = createStackNavigator();
 
 function Router() {
@@ -26,6 +31,10 @@ function Router() {
 
         <Stack.Screen name="WheelSpinning" component={WheelSpinningScreen}  options={{headerShown:null}}/>
         <Stack.Screen name="NumberRandom" component={NumberRandomScreen}  options={{headerShown:null}}/>
+        <Stack.Screen name="CoinToss" component={CoinTossScreen}  options={{headerShown:null}}/>
+        <Stack.Screen name="DiceRoll" component={DiceRollScreen}  options={{headerShown:null}}/>
+        <Stack.Screen name="CardDraw" component={CardDrawScreen}  options={{headerShown:null}}/>
+        <Stack.Screen name="LuckyDraw" component={LuckyDrawScreen}  options={{headerShown:null}}/>
         
       </Stack.Navigator>
     </NavigationContainer>

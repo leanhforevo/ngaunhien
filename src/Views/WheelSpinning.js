@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  Dimensions,
 } from "react-native";
 import WheelOfFortune from "react-native-wheel-of-fortune-dp";
 import { useAudioPlayer } from "expo-audio";
@@ -29,19 +30,7 @@ const participants = [
   "FREE",
 ];
 import Header from '../Component/Header';
-import {
-  BannerAd,
-  BannerAdSize,
-  TestIds,
-} from "react-native-google-mobile-ads";
-
-const ad_id_IOS = "ca-app-pub-4249582158718282/2906946274";
-const ad_id_Android = "ca-app-pub-4249582158718282/4024586823";
-const adUnitId = __DEV__
-  ? TestIds.BANNER
-  : Platform.OS == "ios"
-  ? ad_id_IOS
-  : ad_id_Android;
+import { TopAd, BottomAd } from '../Component/AdBanner';
 const App = ({ navigation }) => {
   const [data, setData] = useState(null);
   const [configs, setConfigs] = useState({
@@ -147,106 +136,130 @@ const App = ({ navigation }) => {
         style={{ width: "100%", height: "100%", position: "absolute" }}
         source={require("../../assets/background.jpeg")}
       />
-       <Header />
-       <View style={{ marginTop: getStatusBarHeight(true) + 50, height: 60, justifyContent: 'center', alignItems: 'center' }}>
-         <BannerAd
-          unitId={adUnitId}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-          requestOptions={{
-            requestNonPersonalizedAdsOnly: true,
-          }}
-        />
-       </View>
-      <View style={{ flex: 1 }}></View>
-      <View style={{ flex: 3 }}>
-        {data && (
-          <WheelOfFortune
-            options={{
-              rewards: data,
-              knobSize: 25,
-              borderWidth: 10,
-              borderColor: "#fff",
-              innerRadius: 50,
-              duration: 9500,
-              backgroundColor: "transparent",
-              textAngle: "horizontal",
-              knobSource: require("../../assets/knook.png"),
-              logoApp: require("../../assets/Logo.png"),
+      <Header />
+      <TopAd containerStyle={{ marginTop: getStatusBarHeight(true) + 50, height: 60, justifyContent: 'center', alignItems: 'center' }} />
 
-              onRef: (ref) => (childRef.current = ref),
-            }}
-            duration={11000}
-            getWinner={_evtResult}
-          />
-        )}
-      </View>
-     
-      <View style={{ flex: 1, alignItems: "center" }}>
-        <View style={styles.containerGroupIcon}>
-          <TouchableOpacity
-            style={styles.containerIcon}
-            onPress={() => {
-            try {
-              setShowConfetti(false);
-              childRef.current?._tryAgain();
-              playSound();
-            } catch (error) {
-              console.log("Error:",error)
-            }
-            }}
-          >
-            <Icon
-              // reverse
-              name="help-buoy-outline"
-              type="ionicon"
-              color="#fff"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.containerIcon}
-            onPress={() => {
-              navigation.navigate("History");
-            }}
-          >
-            <Icon
-              // reverse
-              name="clipboard-outline"
-              type="ionicon"
-              color="#fff"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.containerIcon}
-            onPress={() => {
-              navigation.navigate("Settings", {
-                data: data,
-                callback: (newData) => {
-                  setData(null);
-                  setTimeout(() => {
-                    getData();
-                  }, 10);
-                },
-              });
-            }}
-          >
-            <Icon
-              // reverse
-              name="cog-outline"
-              type="ionicon"
-              color="#fff"
-            />
-          </TouchableOpacity>
+      <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center' }}>
+        <View style={{ width: "100%", height: 310, justifyContent: 'center', alignItems: 'center' }}>
+          {data && (
+            <>
+              <WheelOfFortune
+                options={{
+                  rewards: data,
+                  knobSize: 25,
+                  borderWidth: 10,
+                  borderColor: "#DAA520",
+                  innerRadius: 50,
+                  duration: 9500,
+                  backgroundColor: "transparent",
+                  textAngle: "horizontal",
+                  knobSource: require("../../assets/knook.png"),
+                  logoApp: require("../../assets/Logo.png"),
+                  iconRewards: Array(data.length).fill(null),
+                  colors: ["#B22222", "#222222", "#2E8B57", "#DAA520", "#2F4F4F"],
+                  fontFamily: "Arial",
+                  onRef: (ref) => (childRef.current = ref),
+                }}
+                duration={11000}
+                getWinner={_evtResult}
+              />
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={{
+                  position: 'absolute',
+                  width: 80,
+                  height: 80,
+                  borderRadius: 40,
+                  backgroundColor: '#FFF',
+                  borderWidth: 3,
+                  borderColor: '#DAA520',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  top: -100 + (Dimensions.get('screen').height / 4) - 15,
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 4.65,
+                  elevation: 8,
+                }}
+                onPress={() => {
+                  try {
+                    setShowConfetti(false);
+                    childRef.current?._tryAgain();
+                    playSound();
+                  } catch (error) {
+                    console.log("Error:", error);
+                  }
+                }}
+              >
+                <Image
+                  source={require("../../assets/icon512.png")}
+                  style={{ width: 74, height: 74, borderRadius: 37 }}
+                />
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+
+        <View style={{ height: 30 }} />
+
+        <View style={{ alignItems: "center" }}>
+          <View style={styles.containerGroupIcon}>
+            <TouchableOpacity
+              style={styles.containerIcon}
+              onPress={() => {
+                try {
+                  setShowConfetti(false);
+                  childRef.current?._tryAgain();
+                  playSound();
+                } catch (error) {
+                  console.log("Error:", error);
+                }
+              }}
+            >
+              <Icon
+                name="help-buoy-outline"
+                type="ionicon"
+                color="#1E293B"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.containerIcon}
+              onPress={() => {
+                navigation.navigate("History");
+              }}
+            >
+              <Icon
+                name="clipboard-outline"
+                type="ionicon"
+                color="#1E293B"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.containerIcon}
+              onPress={() => {
+                navigation.navigate("Settings", {
+                  data: data,
+                  callback: (newData) => {
+                    setData(null);
+                    setTimeout(() => {
+                      getData();
+                    }, 10);
+                  },
+                });
+              }}
+            >
+              <Icon
+                name="cog-outline"
+                type="ionicon"
+                color="#1E293B"
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-      <View style={{ height: 60, marginBottom: getBottomSpace() || 10, justifyContent: 'center', alignItems: 'center' }}>
-        <BannerAd
-          unitId={adUnitId}
-          size={BannerAdSize.BANNER}
-          requestOptions={{
-            requestNonPersonalizedAdsOnly: true,
-          }}
-        />
-      </View>
+
+      <BottomAd containerStyle={{ height: 260, marginBottom: getBottomSpace() || 10, justifyContent: 'center', alignItems: 'center' }} />
       <StatusBar style="auto" />
     </View>
   );
@@ -268,7 +281,9 @@ const styles = StyleSheet.create({
   containerGroupIcon: {
     flexDirection: "row",
     paddingHorizontal: 5,
-    backgroundColor: "#c2c2c2",
+    backgroundColor: "rgba(255, 255, 255, 0.4)",
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.5)",
     borderRadius: 35,
     overflow: "hidden",
   },

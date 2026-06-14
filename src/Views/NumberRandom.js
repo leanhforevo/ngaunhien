@@ -9,6 +9,7 @@ import {
   Image,
   ScrollView,
   TextInput,
+  Keyboard,
 } from "react-native";
 import Header from "../Component/Header";
 import { Icon } from "react-native-elements";
@@ -24,64 +25,123 @@ const keyLocalConfigs = "@!keyLocalConfigs2";
 
 import AnimatedNumbers from "react-native-animated-numbers";
 import ConfettiCannon from "react-native-confetti-cannon";
-import {
-  BannerAd,
-  BannerAdSize,
-  TestIds,
-} from "react-native-google-mobile-ads";
-
-const ad_id_IOS = "ca-app-pub-4249582158718282/2906946274";
-const ad_id_Android = "ca-app-pub-4249582158718282/4024586823";
-const adUnitId = __DEV__
-  ? TestIds.BANNER
-  : Platform.OS == "ios"
-  ? ad_id_IOS
-  : ad_id_Android;
+import { TopAd, BottomAd } from '../Component/AdBanner';
 
 const RandomNumbers = ({ navigation }) => {
-  const [configs, setConfigs] = useState({
-    max: 9999,
-    min: 0,
-  });
-  const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(100);
+  const [minValue, setMinValue] = useState("0");
+  const [maxValue, setMaxValue] = useState("100");
+  const [quantity, setQuantity] = useState("1");
 
-  const [animateToNumber, setAnimateToNumber] = React.useState(9999);
+  const [animateToNumbers, setAnimateToNumbers] = useState([0]);
   const [showConfetti, setShowConfetti] = useState(false);
+
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const increase = () => {
     setShowConfetti(false);
-    // alert(minValue+'-'+ maxValue)
-    const value = randomIntFromInterval(parseInt(minValue), parseInt(maxValue));
-    _evtSaveItem(value);
-    setAnimateToNumber(value);
+    let min = parseInt(minValue);
+    let max = parseInt(maxValue);
+    let qty = parseInt(quantity);
+
+    if (isNaN(min)) min = 0;
+    if (isNaN(max)) max = 100;
+    if (isNaN(qty) || qty < 1) qty = 1;
+    if (qty > 50) qty = 50;
+
+    // Auto swap bounds if min > max to prevent calculations error
+    if (min > max) {
+      const temp = min;
+      min = max;
+      max = temp;
+      setMinValue(min + "");
+      setMaxValue(max + "");
+    }
+
+    // Save configuration back to storage
+    Utils.setLocal(keyLocalConfigs, { min, max, quantity: qty });
+
+    // Generate random numbers
+    const newValues = [];
+    for (let i = 0; i < qty; i++) {
+      newValues.push(randomIntFromInterval(min, max));
+    }
+
+    _evtSaveItem(newValues.join(", "));
+    setAnimateToNumbers(newValues);
     setTimeout(() => {
       setShowConfetti(true);
-    }, 100);
+    }, 3000);
   };
-  function randomIntFromInterval(min = 10, max = 9999) {
+  function randomIntFromInterval(min = 0, max = 100) {
     // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
   useEffect(() => {
-    // appOpenAd.load();
-    // appOpenAd.show();
     getData();
+
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisible(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
   }, []);
   const getData = async () => {
-    const dataLocal = await Utils.getLocal(keyLocalCache);
     const configsLocal = await Utils.getLocal(keyLocalConfigs);
     if (configsLocal) {
-      setConfigs(configsLocal);
+      const min = parseInt(configsLocal.min);
+      const max = parseInt(configsLocal.max);
+      const qty = parseInt(configsLocal.quantity);
+      const valMin = isNaN(min) ? 0 : min;
+      const valMax = isNaN(max) ? 100 : max;
+      const valQty = isNaN(qty) ? 1 : qty;
+      setMinValue(valMin + "");
+      setMaxValue(valMax + "");
+      setQuantity(valQty + "");
+      setAnimateToNumbers(Array(valQty).fill(valMin));
     } else {
-      Utils.setLocal(keyLocalConfigs, configsLocal);
+      const defaultConfigs = { min: 0, max: 100, quantity: 1 };
+      await Utils.setLocal(keyLocalConfigs, defaultConfigs);
+      setMinValue("0");
+      setMaxValue("100");
+      setQuantity("1");
+      setAnimateToNumbers([0]);
     }
-    if (dataLocal) {
-      setData(dataLocal);
-    } else {
-      Utils.setLocal(keyLocalCache, participants);
-      setData(participants);
-    }
+  };
+
+  const handleSetMin = async (val) => {
+    setMinValue(val);
+    const cleanMin = parseInt(val) || 0;
+    const cleanMax = parseInt(maxValue) || 0;
+    const cleanQty = parseInt(quantity) || 1;
+    setAnimateToNumbers(Array(cleanQty).fill(cleanMin));
+    await Utils.setLocal(keyLocalConfigs, { min: cleanMin, max: cleanMax, quantity: cleanQty });
+  };
+
+  const handleSetMax = async (val) => {
+    setMaxValue(val);
+    const cleanMin = parseInt(minValue) || 0;
+    const cleanMax = parseInt(val) || 0;
+    const cleanQty = parseInt(quantity) || 1;
+    await Utils.setLocal(keyLocalConfigs, { min: cleanMin, max: cleanMax, quantity: cleanQty });
+  };
+
+  const handleSetQuantity = async (val) => {
+    const cleanVal = val.replace(/[^0-9]/g, "");
+    setQuantity(cleanVal);
+    let qtyNum = parseInt(cleanVal) || 1;
+    if (qtyNum > 50) qtyNum = 50;
+    if (qtyNum < 1) qtyNum = 1;
+
+    const cleanMin = parseInt(minValue) || 0;
+    const cleanMax = parseInt(maxValue) || 0;
+    setAnimateToNumbers(Array(qtyNum).fill(cleanMin));
+    await Utils.setLocal(keyLocalConfigs, { min: cleanMin, max: cleanMax, quantity: qtyNum });
   };
 
   const _evtSaveItem = async (value) => {
@@ -116,69 +176,82 @@ const RandomNumbers = ({ navigation }) => {
         source={require("../../assets/background.jpeg")}
       />
       <Header />
-      <View style={{ marginTop: getStatusBarHeight(true) + 50, height: 60, justifyContent: 'center', alignItems: 'center' }}>
-        <BannerAd
-          unitId={adUnitId}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-          requestOptions={{
-            requestNonPersonalizedAdsOnly: true,
-          }}
-        />
-      </View>
+      <TopAd containerStyle={{ marginTop: getStatusBarHeight(true) + 50, height: 60, justifyContent: 'center', alignItems: 'center' }} />
       <ScrollView
         //ref={refScroll}
         contentContainerStyle={{
-          flex: 1,
-          paddingBottom: getBottomSpace() || 15,
+          flexGrow: 1,
+          paddingBottom: 270 + (getBottomSpace() || 15),
         }}
       >
-        <View style={{ flex: 1 }}></View>
+        <View style={{ height: 40 }}></View>
         <View
-          style={{ flex: 3, justifyContent: "center", alignItems: "center" }}
+          style={{ height: 180, justifyContent: "center", alignItems: "center" }}
         >
-          <AnimatedNumbers
-            // includeComma
-            animateToNumber={animateToNumber}
-            fontStyle={{ fontSize: 50, fontWeight: "bold" }}
-          />
+          <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center", alignItems: "center", paddingHorizontal: 20 }}>
+            {animateToNumbers.map((num, idx) => (
+              <View key={idx} style={{ marginHorizontal: 8, marginVertical: 4 }}>
+                <AnimatedNumbers
+                  animateToNumber={num}
+                  animationDuration={3000}
+                  fontStyle={{
+                    fontSize: animateToNumbers.length > 8 ? 24 : animateToNumbers.length > 4 ? 32 : 50,
+                    fontWeight: "bold",
+                    fontFamily: "Arial",
+                    color: "#1E293B"
+                  }}
+                />
+              </View>
+            ))}
+          </View>
         </View>
-        <View style={{ width: "100%", height: 60, flexDirection: "row" }}>
-          <View style={styles.containerBTNAdd}>
+        <View style={{ width: "100%", height: 60, flexDirection: "row", paddingHorizontal: 5 }}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>From:</Text>
             <TextInput
-              // ref={refTxt}
-              style={{ flex: 1 }}
-              placeholder={"Nhập nội dung"}
-              //  autoCapitalize="none"
+              style={styles.textInput}
+              placeholder={"0"}
+              placeholderTextColor="rgba(30,41,59,0.4)"
               autoCorrect={false}
               returnKeyType={"done"}
               keyboardType={"numeric"}
-              value={minValue + ""}
-              onChangeText={(txt) => setMinValue(txt)}
+              value={minValue}
+              onChangeText={handleSetMin}
               onSubmitEditing={() => {}}
             />
-            <View style={styles.containerLabel}>
-              <Text style={{}}>From:</Text>
-            </View>
           </View>
-          <View style={styles.containerBTNAdd}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>To:</Text>
             <TextInput
-              // ref={refTxt}
-              style={{ flex: 1 }}
-              placeholder={"Nhập nội dung"}
-              //  autoCapitalize="none"
+              style={styles.textInput}
+              placeholder={"100"}
+              placeholderTextColor="rgba(30,41,59,0.4)"
               autoCorrect={false}
               returnKeyType={"done"}
-              value={maxValue + ""}
               keyboardType={"numeric"}
-              onChangeText={(txt) => setMaxValue(txt)}
+              value={maxValue}
+              onChangeText={handleSetMax}
               onSubmitEditing={() => {}}
             />
-            <View style={styles.containerLabel}>
-              <Text style={{}}>To:</Text>
-            </View>
           </View>
         </View>
-        <View style={{ flex: 1, alignItems: "center" }}>
+        <View style={{ width: "100%", height: 60, flexDirection: "row", paddingHorizontal: 5 }}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Quantity:</Text>
+            <TextInput
+              style={styles.textInput}
+              placeholder={"1"}
+              placeholderTextColor="rgba(30,41,59,0.4)"
+              autoCorrect={false}
+              returnKeyType={"done"}
+              keyboardType={"numeric"}
+              value={quantity}
+              onChangeText={handleSetQuantity}
+              onSubmitEditing={() => {}}
+            />
+          </View>
+        </View>
+        <View style={{ alignItems: "center", marginTop: 20 }}>
           <View style={styles.containerGroupIcon}>
             <TouchableOpacity
               style={styles.containerIcon}
@@ -190,7 +263,7 @@ const RandomNumbers = ({ navigation }) => {
                 // reverse
                 name="help-buoy-outline"
                 type="ionicon"
-                color="#fff"
+                color="#1E293B"
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -203,22 +276,15 @@ const RandomNumbers = ({ navigation }) => {
                 // reverse
                 name="clipboard-outline"
                 type="ionicon"
-                color="#fff"
+                color="#1E293B"
               />
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
-      <View style={{ height: 60, marginBottom: getBottomSpace() || 10, justifyContent: 'center', alignItems: 'center' }}>
-        <BannerAd
-          unitId={adUnitId}
-          size={BannerAdSize.BANNER}
-          requestOptions={{
-            requestNonPersonalizedAdsOnly: true,
-          }}
-        />
-      </View>
-      <KeyboardSpacer />
+      {!isKeyboardVisible && (
+        <BottomAd containerStyle={{ position: 'absolute', bottom: getBottomSpace() || 10, left: 0, right: 0, height: 260, justifyContent: 'center', alignItems: 'center' }} />
+      )}
       <StatusBar style="auto" />
     </View>
   );
@@ -228,8 +294,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    // alignItems: "center",
-    // justifyContent: "center",
   },
   containerIcon: {
     justifyContent: "center",
@@ -240,38 +304,37 @@ const styles = StyleSheet.create({
   containerGroupIcon: {
     flexDirection: "row",
     paddingHorizontal: 5,
-    backgroundColor: "#c2c2c2",
+    backgroundColor: "rgba(255, 255, 255, 0.4)",
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.5)",
     borderRadius: 35,
     overflow: "hidden",
   },
-  containerBTNAdd: {
+  inputContainer: {
     height: 50,
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 15,
     borderRadius: 10,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    justifyContent: "center",
-    borderRadius: 10,
-    borderTopWidth: 1,
-    borderLeftWidth: 2,
-    borderRightWidth: 3,
-    borderBottomWidth: 4,
-    borderColor: "#617EAF",
+    backgroundColor: "rgba(255, 255, 255, 0.4)",
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.5)",
     marginHorizontal: 10,
     marginBottom: 10,
   },
-  containerLabel: {
-    position: "absolute",
-    top: -10,
-    left: 10,
-    backgroundColor: "#ffffff",
-    paddingHorizontal: 15,
-    borderRadius: 10,
+  inputLabel: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "rgba(30,41,59,0.7)",
+    marginRight: 8,
+    fontFamily: "Arial",
   },
-  bottomBanner: {
-    position: "absolute",
-    bottom: 0,
+  textInput: {
+    flex: 1,
+    color: "#1E293B",
+    fontSize: 16,
+    height: "100%",
+    fontFamily: "Arial",
   },
 });
