@@ -34,7 +34,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.nokey.random",
-      "buildNumber": "1.0.2",
+      "buildNumber": "1",
       "config": {
         "usesNonExemptEncryption": false
       }

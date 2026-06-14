@@ -1,6 +1,6 @@
 {
   "cli": {
-    "version": ">= 13.0.0",
+    "version": ">= 20.1.0",
     "appVersionSource": "remote",
     "promptToConfigurePushNotifications": false
   },
@@ -8,12 +8,10 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "android": {
-        "buildType": "apk"
-      },
       "ios": {
-        "simulator": true
-      }
+        "resourceClass": "m-medium"
+      },
+      "autoIncrement": true
     },
     "preview": {
       "distribution": "internal",
@@ -23,7 +21,9 @@
       "channel": "staging"
     },
     "production": {
-      "channel": "prod-v1"
+      "distribution": "store",
+      "channel": "prod-v1",
+      "autoIncrement": true
     }
   },
   "submit": {
