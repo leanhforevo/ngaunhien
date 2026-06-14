@@ -23,6 +23,7 @@ const keyLocalhistory = "@!cacheDataHistory2";
 const keyLocalConfigs = "@!keyLocalConfigs2";
 
 import AnimatedNumbers from "react-native-animated-numbers";
+import ConfettiCannon from "react-native-confetti-cannon";
 import {
   BannerAd,
   BannerAdSize,
@@ -46,12 +47,17 @@ const RandomNumbers = ({ navigation }) => {
   const [maxValue, setMaxValue] = useState(100);
 
   const [animateToNumber, setAnimateToNumber] = React.useState(9999);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const increase = () => {
+    setShowConfetti(false);
     // alert(minValue+'-'+ maxValue)
     const value = randomIntFromInterval(parseInt(minValue), parseInt(maxValue));
     _evtSaveItem(value);
     setAnimateToNumber(value);
+    setTimeout(() => {
+      setShowConfetti(true);
+    }, 100);
   };
   function randomIntFromInterval(min = 10, max = 9999) {
     // min and max included
@@ -98,6 +104,13 @@ const RandomNumbers = ({ navigation }) => {
   };
   return (
     <View style={styles.container}>
+      {showConfetti && (
+        <ConfettiCannon
+          count={100}
+          origin={{ x: 180, y: -20 }}
+          fadeOut={true}
+        />
+      )}
       <Image
         style={{ width: "100%", height: "100%", position: "absolute" }}
         source={require("../../assets/background.jpeg")}

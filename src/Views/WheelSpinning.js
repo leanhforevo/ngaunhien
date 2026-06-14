@@ -11,6 +11,7 @@ import {
 import WheelOfFortune from "react-native-wheel-of-fortune-dp";
 import { Audio } from "expo-av";
 import { Icon } from "react-native-elements";
+import ConfettiCannon from "react-native-confetti-cannon";
 import Utils from "../Utils/utils";
 const keyLocalCache = "@!cacheData";
 const keyLocalhistory = "@!cacheDataHistory";
@@ -46,6 +47,7 @@ const App = ({ navigation }) => {
     sound: true,
     duration: 9500,
   });
+  const [showConfetti, setShowConfetti] = useState(false);
 
   var child = null;
   // const wheelOptions = ;
@@ -71,7 +73,7 @@ const App = ({ navigation }) => {
     if (!configs?.sound) return null;
 
     const { sound } = await Audio.Sound.createAsync(
-      require("../../assets/wheelSpining.m4a")
+      require("../../assets/wheelSpining.wav")
     );
     await sound.playAsync();
   };
@@ -95,6 +97,7 @@ const App = ({ navigation }) => {
   };
   const _evtResult = (value, index) => {
     _evtSaveItem(value);
+    setShowConfetti(true);
     Alert.alert("Completed", `Result: ${value}`, [
       {
         text: "Remove item in wheel",
@@ -119,6 +122,13 @@ const App = ({ navigation }) => {
   // if (!data) return null;
   return (
     <View style={styles.container}>
+      {showConfetti && (
+        <ConfettiCannon
+          count={150}
+          origin={{ x: 180, y: -20 }}
+          fadeOut={true}
+        />
+      )}
       <Image
         style={{ width: "100%", height: "100%", position: "absolute" }}
         source={require("../../assets/background.jpeg")}
@@ -162,6 +172,7 @@ const App = ({ navigation }) => {
             style={styles.containerIcon}
             onPress={() => {
             try {
+              setShowConfetti(false);
               child._tryAgain();
               playSound();
             } catch (error) {

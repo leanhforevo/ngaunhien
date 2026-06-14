@@ -25,12 +25,15 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "react-native-google-mobile-ads"
     ],
     "updates": {
       "url": "https://u.expo.dev/f493a012-2d49-4c10-b5bc-442df2e25829"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.nokey.random",
