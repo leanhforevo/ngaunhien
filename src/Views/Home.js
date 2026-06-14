@@ -1,165 +1,108 @@
-import React from "react";
-import { ImageBackground, Pressable, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from "react-native";
+import { Icon } from "react-native-elements";
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+} from "react-native-google-mobile-ads";
 
-const quickActions = [
-  {
-    key: "wheel",
-    title: "Vòng quay",
-    subtitle: "Random bằng wheel",
-    screen: "WheelSpinning",
-  },
-  {
-    key: "number",
-    title: "Số ngẫu nhiên",
-    subtitle: "Chọn số nhanh",
-    screen: "NumberRandom",
-  },
-];
-
-export default function HomeScreen({ navigation }) {
+const ad_id_IOS = "ca-app-pub-4249582158718282/2906946274";
+const ad_id_Android = "ca-app-pub-4249582158718282/4024586823";
+const adUnitId = __DEV__
+  ? TestIds.BANNER
+  : Platform.OS == "ios"
+  ? ad_id_IOS
+  : ad_id_Android;
+const App = ({ navigation }) => {
+  useEffect(() => {}, []);
   return (
-    <ImageBackground
-      source={require("../../assets/background.jpeg")}
-      style={styles.background}
-      resizeMode="cover"
-    >
-      <View style={styles.overlay} />
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.kicker}>RANDOM APP</Text>
-          <Text style={styles.title}>Boilerplate chuẩn cho app random</Text>
-          <Text style={styles.description}>
-            Giao diện nền tảng gọn, hiện đại, dễ mở rộng cho feature mới.
-          </Text>
-        </View>
+    <View style={styles.container}>
+      <Image
+        style={{ width: "100%", height: "100%", position: "absolute" }}
+        source={require("../../assets/background.jpeg")}
+      />
+            <View style={{alignItems:'center'}}>
+      <BannerAd
+        unitId={adUnitId}
+        style={{top:50}}
+        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        requestOptions={{
+          requestNonPersonalizedAdsOnly: true,
+        }}
+      />
+      </View>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "space-around",
+          alignItems: "center",
+          flexDirection: "row",
+        }}
+      >
+        <TouchableOpacity style={styles.containerItem} onPress={()=>{navigation.navigate('WheelSpinning')}}>
+          <Image
+            style={{ width: "100%", height: "100%" }}
+            source={require("../../assets/WheelSpining.png")}
+          />
+        </TouchableOpacity>
 
-        <View style={styles.grid}>
-          {quickActions.map((item) => (
-            <Pressable
-              key={item.key}
-              onPress={() => navigation.navigate(item.screen)}
-              style={({ pressed }) => [
-                styles.card,
-                pressed && styles.cardPressed,
-              ]}
-            >
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              <Text style={styles.cardSubtitle}>{item.subtitle}</Text>
-            </Pressable>
-          ))}
-        </View>
-
-        <View style={styles.footer}>
-          <Pressable
-            onPress={() => navigation.navigate("History")}
-            style={({ pressed }) => [styles.footerButton, pressed && styles.footerButtonPressed]}
-          >
-            <Text style={styles.footerButtonText}>Xem lịch sử</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate("Settings")}
-            style={({ pressed }) => [styles.footerButtonSecondary, pressed && styles.footerButtonPressed]}
-          >
-            <Text style={styles.footerButtonSecondaryText}>Cài đặt</Text>
-          </Pressable>
-        </View>
-      </SafeAreaView>
-    </ImageBackground>
+        <TouchableOpacity style={styles.containerItem} onPress={()=>{navigation.navigate('NumberRandom')}}>
+          <Image
+            style={{ width: "100%", height: "100%", position: "absolute" }}
+            source={require("../../assets/randomNumber.jpeg")}
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={{alignItems:'center'}}>
+      <BannerAd
+        unitId={adUnitId}
+        style={{top:50}}
+        size={BannerAdSize.MEDIUM_RECTANGLE}
+        requestOptions={{
+          requestNonPersonalizedAdsOnly: true,
+        }}
+      />
+      </View>
+    </View>
   );
-}
-
+};
+export default App;
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(10, 14, 25, 0.72)",
-  },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingBottom: 24,
-    justifyContent: "space-between",
+    backgroundColor: "#fff",
+    // alignItems: "center",
+    // justifyContent: "center",
   },
-  header: {
-    paddingTop: 12,
+  containerIcon: {
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 8,
+    padding: 15,
   },
-  kicker: {
-    color: "#A5B4FC",
-    fontSize: 12,
-    fontWeight: "700",
-    letterSpacing: 2,
-    marginBottom: 10,
-  },
-  title: {
-    color: "#FFFFFF",
-    fontSize: 32,
-    lineHeight: 38,
-    fontWeight: "800",
-    maxWidth: 320,
-  },
-  description: {
-    color: "rgba(255,255,255,0.78)",
-    fontSize: 15,
-    lineHeight: 22,
-    marginTop: 12,
-    maxWidth: 330,
-  },
-  grid: {
-    gap: 14,
-  },
-  card: {
-    borderRadius: 24,
-    padding: 20,
-    backgroundColor: "rgba(255,255,255,0.12)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.14)",
-  },
-  cardPressed: {
-    transform: [{ scale: 0.98 }],
-    opacity: 0.9,
-  },
-  cardTitle: {
-    color: "#FFFFFF",
-    fontSize: 20,
-    fontWeight: "700",
-  },
-  cardSubtitle: {
-    color: "rgba(255,255,255,0.72)",
-    marginTop: 6,
-    fontSize: 14,
-  },
-  footer: {
+  containerGroupIcon: {
     flexDirection: "row",
-    gap: 12,
+    paddingHorizontal: 5,
+    backgroundColor: "#c2c2c2",
+    borderRadius: 35,
+    overflow: "hidden",
   },
-  footerButton: {
-    flex: 1,
-    backgroundColor: "#6366F1",
-    borderRadius: 16,
-    paddingVertical: 16,
+  containerItem: {
+    width: 120,
+    height: 120,
+    overflow: "hidden",
+    backgroundColor: "#ffffff80",
+    borderRadius: 8,
+    justifyContent: "center",
     alignItems: "center",
-  },
-  footerButtonSecondary: {
-    flex: 1,
-    backgroundColor: "rgba(255,255,255,0.12)",
-    borderRadius: 16,
-    paddingVertical: 16,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.14)",
-  },
-  footerButtonPressed: {
-    opacity: 0.88,
-  },
-  footerButtonText: {
-    color: "#FFFFFF",
-    fontWeight: "700",
-  },
-  footerButtonSecondaryText: {
-    color: "#FFFFFF",
-    fontWeight: "700",
   },
 });
