@@ -15,7 +15,7 @@
     "eas-build:preview": "npx eas-cli@latest build --profile preview --platform all",
     "eas-build:production": "npx eas-cli@latest build --profile production --platform all",
     "eas-submit:android": "npx eas-cli@latest submit --platform android --profile production",
-    "eas-submit:ios": "npx eas-cli@latest submit --platform ios --profile production",
+    "eas-submit:ios": "npx eas-cli@latest submit --platform ios",
     "eas-update:production": "npx eas-cli@latest update --branch prod-v1 --message \"production update\"",
     "eas-update:staging": "npx eas-cli@latest update --branch staging --message \"staging update\""
   },
