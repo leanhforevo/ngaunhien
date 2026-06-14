@@ -17,7 +17,7 @@ import {
   getBottomSpace,
   getStatusBarHeight,
 } from "react-native-iphone-x-helper-2";
-import KeyboardSpacer from "react-native-keyboard-spacer";
+import KeyboardSpacer from "../Component/KeyboardSpacer";
 const keyLocalCache = "@!cacheData2";
 const keyLocalhistory = "@!cacheDataHistory2";
 const keyLocalConfigs = "@!keyLocalConfigs2";
@@ -116,14 +116,15 @@ const RandomNumbers = ({ navigation }) => {
         source={require("../../assets/background.jpeg")}
       />
       <Header />
-      <BannerAd
-        unitId={adUnitId}
-        style={{top:50}}
-        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-        requestOptions={{
-          requestNonPersonalizedAdsOnly: true,
-        }}
-      />
+      <View style={{ marginTop: getStatusBarHeight(true) + 50, height: 60, justifyContent: 'center', alignItems: 'center' }}>
+        <BannerAd
+          unitId={adUnitId}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+        />
+      </View>
       <ScrollView
         //ref={refScroll}
         contentContainerStyle={{
@@ -208,15 +209,14 @@ const RandomNumbers = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
-      <View style={{alignItems:'center'}}>
-      <BannerAd
-        unitId={adUnitId}
-        style={{top:50}}
-        size={BannerAdSize.MEDIUM_RECTANGLE}
-        requestOptions={{
-          requestNonPersonalizedAdsOnly: true,
-        }}
-      />
+      <View style={{ height: 60, marginBottom: getBottomSpace() || 10, justifyContent: 'center', alignItems: 'center' }}>
+        <BannerAd
+          unitId={adUnitId}
+          size={BannerAdSize.BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+        />
       </View>
       <KeyboardSpacer />
       <StatusBar style="auto" />

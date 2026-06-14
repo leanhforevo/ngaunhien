@@ -30,19 +30,18 @@ export default function App({ navigation, route }) {
       />
 
       <View style={{ height: getStatusBarHeight(true) }} />
-      <View style={{ height: 50, flexDirection: "row" }}>
+      <View style={{ height: 50, flexDirection: "row", alignItems: "center" }}>
         <TouchableOpacity style={styles.containerIcon} onPress={()=>navigation.pop()}>
           <Icon
-            // reverse
             name="arrow-back-circle-outline"
             type="ionicon"
-            color="#000"
+            color="#FFF"
           />
         </TouchableOpacity>
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <Text style={{ fontSize: 18, fontWeight: "500" }}>
+          <Text style={{ fontSize: 18, fontWeight: "500", color: "#FFF" }}>
             Lịch sử lượt quay
           </Text>
         </View>
@@ -56,25 +55,24 @@ export default function App({ navigation, route }) {
           {arrData && arrData.length > 0 ? (
             <FlatList
               data={[...arrData]}
-              // contentContainerStyle={{ marginBottom: getBottomSpace() || 15 }}
               keyExtractor={(e, i) => `itemList${i}`}
               ItemSeparatorComponent={() => (
                 <View
                   style={{
                     marginHorizontal: 15,
                     height: StyleSheet.hairlineWidth,
-                    backgroundColor: "#000",
+                    backgroundColor: "rgba(255,255,255,0.12)",
                   }}
                 />
               )}
               renderItem={({ item, index }) => {
                 return (
                   <View style={styles.containerRow}>
-                    <Text style={{ flex: 1, fontSize: 15, fontWeight: "500" }}>
+                    <Text style={{ flex: 1, fontSize: 15, fontWeight: "500", color: "#FFF" }}>
                       {index + 1 + ". " + item?.title}
                     </Text>
                     <View style={styles.containerIcon}>
-                      <Text style={{ fontSize: 15, fontWeight: "500" }}>
+                      <Text style={{ fontSize: 15, fontWeight: "500", color: "#FFF" }}>
                         {moment(item?.time).format("DD/MM/YYYY hh:mm:ss")}
                       </Text>
                     </View>
@@ -84,7 +82,7 @@ export default function App({ navigation, route }) {
             />
           ) : (
             <View style={styles.containerRow}>
-              <Text style={{ flex: 1, fontSize: 15, fontWeight: "500" }}>
+              <Text style={{ flex: 1, fontSize: 15, fontWeight: "500", color: "#FFF" }}>
                 {`Không có dữ liệu`}
               </Text>
             </View>
@@ -106,24 +104,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   containerGroup: {
-    backgroundColor: "#ffffff60",
+    backgroundColor: "rgba(255,255,255,0.08)",
     borderRadius: 10,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderLeftWidth: 1,
-    borderRightWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: 2,
-    borderColor: "#617EAF",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.12)",
     marginTop: 10,
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-
-    elevation: 8,
   },
   containerRow: {
     height: 50,

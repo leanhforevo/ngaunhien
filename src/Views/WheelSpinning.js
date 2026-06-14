@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,6 +13,7 @@ import { useAudioPlayer } from "expo-audio";
 import { Icon } from "react-native-elements";
 import ConfettiCannon from "react-native-confetti-cannon";
 import Utils from "../Utils/utils";
+import { getStatusBarHeight, getBottomSpace } from "react-native-iphone-x-helper-2";
 const keyLocalCache = "@!cacheData";
 const keyLocalhistory = "@!cacheDataHistory";
 const keyLocalConfigs = "@!keyLocalConfigs";
@@ -50,7 +51,7 @@ const App = ({ navigation }) => {
   const [showConfetti, setShowConfetti] = useState(false);
   const player = useAudioPlayer(require("../../assets/wheelSpining.wav"));
 
-  var child = null;
+  const childRef = useRef(null);
   // const wheelOptions = ;
   useEffect(() => {
     getData();
@@ -75,6 +76,11 @@ const App = ({ navigation }) => {
 
     try {
       player.seekTo(0);
+    } catch (e) {
+      console.log("Audio seek error:", e);
+    }
+
+    try {
       player.play();
     } catch (error) {
       console.log("Audio play error:", error);
@@ -101,6 +107,11 @@ const App = ({ navigation }) => {
   const _evtResult = (value, index) => {
     _evtSaveItem(value);
     setShowConfetti(true);
+    try {
+      player.pause();
+    } catch (error) {
+      console.log("Audio pause error:", error);
+    }
     Alert.alert("Completed", `Result: ${value}`, [
       {
         text: "Remove item in wheel",
@@ -137,14 +148,15 @@ const App = ({ navigation }) => {
         source={require("../../assets/background.jpeg")}
       />
        <Header />
-       <BannerAd
-        unitId={adUnitId}
-        style={{top:50}}
-        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-        requestOptions={{
-          requestNonPersonalizedAdsOnly: true,
-        }}
-      />
+       <View style={{ marginTop: getStatusBarHeight(true) + 50, height: 60, justifyContent: 'center', alignItems: 'center' }}>
+         <BannerAd
+          unitId={adUnitId}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+        />
+       </View>
       <View style={{ flex: 1 }}></View>
       <View style={{ flex: 3 }}>
         {data && (
@@ -161,7 +173,7 @@ const App = ({ navigation }) => {
               knobSource: require("../../assets/knook.png"),
               logoApp: require("../../assets/Logo.png"),
 
-              onRef: (ref) => (child = ref),
+              onRef: (ref) => (childRef.current = ref),
             }}
             duration={11000}
             getWinner={_evtResult}
@@ -176,7 +188,7 @@ const App = ({ navigation }) => {
             onPress={() => {
             try {
               setShowConfetti(false);
-              child._tryAgain();
+              childRef.current?._tryAgain();
               playSound();
             } catch (error) {
               console.log("Error:",error)
@@ -226,15 +238,14 @@ const App = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{alignItems:'center'}}>
-      <BannerAd
-        unitId={adUnitId}
-        style={{top:50}}
-        size={BannerAdSize.MEDIUM_RECTANGLE}
-        requestOptions={{
-          requestNonPersonalizedAdsOnly: true,
-        }}
-      />
+      <View style={{ height: 60, marginBottom: getBottomSpace() || 10, justifyContent: 'center', alignItems: 'center' }}>
+        <BannerAd
+          unitId={adUnitId}
+          size={BannerAdSize.BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+        />
       </View>
       <StatusBar style="auto" />
     </View>

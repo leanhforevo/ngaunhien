@@ -13,7 +13,7 @@ import {
   LayoutAnimation,
 } from "react-native";
 import { Icon } from "react-native-elements";
-import KeyboardSpacer from "react-native-keyboard-spacer";
+import KeyboardSpacer from "../Component/KeyboardSpacer";
 import {
   getBottomSpace,
   getStatusBarHeight,
@@ -99,22 +99,21 @@ export default function App({ navigation, route }) {
       />
 
       <View style={{ height: getStatusBarHeight(true) }} />
-      <View style={{ height: 50, flexDirection: "row" }}>
+      <View style={{ height: 50, flexDirection: "row", alignItems: "center" }}>
         <TouchableOpacity
           style={styles.containerIcon}
           onPress={() => navigation.pop()}
         >
           <Icon
-            // reverse
             name="arrow-back-circle-outline"
             type="ionicon"
-            color="#000"
+            color="#FFF"
           />
         </TouchableOpacity>
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <Text style={{ fontSize: 18, fontWeight: "500" }}>Cài đặt</Text>
+          <Text style={{ fontSize: 18, fontWeight: "500", color: "#FFF" }}>Cài đặt</Text>
         </View>
         <View style={styles.containerIcon}></View>
       </View>
@@ -124,14 +123,14 @@ export default function App({ navigation, route }) {
         contentContainerStyle={{ paddingBottom: getBottomSpace() || 15 }}
       >
         <View style={{ padding: 15 }}>
-          <Text style={{ fontSize: 18, fontWeight: "500" }}>Cài đặt</Text>
+          <Text style={{ fontSize: 18, fontWeight: "500", color: "#FFF" }}>Cài đặt</Text>
           <View style={styles.containerGroup}>
             <View style={styles.containerRow}>
-              <Text style={{ flex: 1, fontSize: 15, fontWeight: "500" }}>
+              <Text style={{ flex: 1, fontSize: 15, fontWeight: "500", color: "#FFF" }}>
                 Âm thanh
               </Text>
               <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                trackColor={{ false: "#3e3e3e", true: "#81b0ff" }}
                 thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={_evtPressedSound}
@@ -141,47 +140,44 @@ export default function App({ navigation, route }) {
           </View>
         </View>
         <View style={{ padding: 15 }}>
-          <Text style={{ fontSize: 18, fontWeight: "500" }}> Danh sách</Text>
+          <Text style={{ fontSize: 18, fontWeight: "500", color: "#FFF" }}> Danh sách</Text>
           <View style={styles.containerGroup}>
-            <FlatList
-              data={[...arrData]}
-              keyExtractor={(e, i) => `itemList${i}`}
-              ItemSeparatorComponent={() => (
-                <View
-                  style={{
-                    marginHorizontal: 15,
-                    height: StyleSheet.hairlineWidth,
-                    backgroundColor: "#000",
-                  }}
-                />
-              )}
-              renderItem={({ item, index }) => {
-                return (
-                  <View style={styles.containerRow}>
-                    <Text style={{ flex: 1, fontSize: 15, fontWeight: "500" }}>
-                      {index + 1 + ". " + item}
-                    </Text>
-                    <TouchableOpacity
-                      style={styles.containerIcon}
-                      onPress={() => _evtRemove(index)}
-                    >
-                      <Icon
-                        name="close-circle-outline"
-                        type="ionicon"
-                        color="#000"
-                      />
-                    </TouchableOpacity>
-                  </View>
-                );
-              }}
-            />
+            {arrData.map((item, index) => (
+              <View key={`itemList${index}`}>
+                <View style={styles.containerRow}>
+                  <Text style={{ flex: 1, fontSize: 15, fontWeight: "500", color: "#FFF" }}>
+                    {index + 1 + ". " + item}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.containerIcon}
+                    onPress={() => _evtRemove(index)}
+                  >
+                    <Icon
+                      name="close-circle-outline"
+                      type="ionicon"
+                      color="#FFF"
+                    />
+                  </TouchableOpacity>
+                </View>
+                {index < arrData.length - 1 && (
+                  <View
+                    style={{
+                      marginHorizontal: 15,
+                      height: StyleSheet.hairlineWidth,
+                      backgroundColor: "rgba(255,255,255,0.12)",
+                    }}
+                  />
+                )}
+              </View>
+            ))}
+
             {showAdd ? (
               <View style={styles.containerBTNAdd}>
                 <TextInput
                   ref={refTxt}
-                  style={{ flex: 1 }}
+                  style={{ flex: 1, color: "#FFF" }}
                   placeholder={"Nhập nội dung"}
-                  //  autoCapitalize="none"
+                  placeholderTextColor="rgba(255,255,255,0.4)"
                   autoCorrect={false}
                   returnKeyType={"done"}
                   value={txtAdd}
@@ -194,15 +190,16 @@ export default function App({ navigation, route }) {
                 style={{
                   ...styles.containerRow,
                   borderTopWidth: StyleSheet.hairlineWidth,
+                  borderTopColor: "rgba(255,255,255,0.12)",
                   justifyContent: "center",
                 }}
                 onPress={_evtShowAdd}
               >
-                <Text style={{ fontSize: 15, fontWeight: "500" }}>
+                <Text style={{ fontSize: 15, fontWeight: "500", color: "#FFF" }}>
                   Thêm mới
                 </Text>
                 <View style={styles.containerIcon}>
-                  <Icon name="add-circle-outline" type="ionicon" color="#000" />
+                  <Icon name="add-circle-outline" type="ionicon" color="#FFF" />
                 </View>
               </TouchableOpacity>
             )}
@@ -226,25 +223,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   containerGroup: {
-    backgroundColor: "#ffffff60",
+    backgroundColor: "rgba(255,255,255,0.08)",
     borderRadius: 10,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderLeftWidth: 1,
-    borderRightWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: 2,
-    borderColor: "#617EAF",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.12)",
     marginTop: 10,
-    // overflow:'hidden',
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-
-    elevation: 8,
   },
   containerRow: {
     height: 50,
@@ -259,14 +242,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 15,
     borderRadius: 10,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    justifyContent: "center",
-    borderRadius: 10,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderLeftWidth: 1,
-    borderRightWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: 2,
-    borderColor: "#617EAF",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.12)",
     marginHorizontal: 10,
     marginBottom: 10,
   },

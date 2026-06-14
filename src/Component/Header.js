@@ -13,7 +13,6 @@ import {
   LayoutAnimation,
 } from "react-native";
 import { Icon } from "react-native-elements";
-import KeyboardSpacer from "react-native-keyboard-spacer";
 import {
   getBottomSpace,
   getStatusBarHeight,

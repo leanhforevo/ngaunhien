@@ -14,6 +14,7 @@ import {
   BannerAdSize,
   TestIds,
 } from "react-native-google-mobile-ads";
+import { getStatusBarHeight, getBottomSpace } from "react-native-iphone-x-helper-2";
 
 const ad_id_IOS = "ca-app-pub-4249582158718282/2906946274";
 const ad_id_Android = "ca-app-pub-4249582158718282/4024586823";
@@ -30,15 +31,14 @@ const App = ({ navigation }) => {
         style={{ width: "100%", height: "100%", position: "absolute" }}
         source={require("../../assets/background.jpeg")}
       />
-            <View style={{alignItems:'center'}}>
-      <BannerAd
-        unitId={adUnitId}
-        style={{top:50}}
-        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-        requestOptions={{
-          requestNonPersonalizedAdsOnly: true,
-        }}
-      />
+      <View style={{ marginTop: getStatusBarHeight(true) + 10, alignItems: 'center' }}>
+        <BannerAd
+          unitId={adUnitId}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+        />
       </View>
       <View
         style={{
@@ -62,15 +62,14 @@ const App = ({ navigation }) => {
           />
         </TouchableOpacity>
       </View>
-      <View style={{alignItems:'center'}}>
-      <BannerAd
-        unitId={adUnitId}
-        style={{top:50}}
-        size={BannerAdSize.MEDIUM_RECTANGLE}
-        requestOptions={{
-          requestNonPersonalizedAdsOnly: true,
-        }}
-      />
+      <View style={{ height: 60, marginBottom: getBottomSpace() || 10, justifyContent: 'center', alignItems: 'center' }}>
+        <BannerAd
+          unitId={adUnitId}
+          size={BannerAdSize.BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+        />
       </View>
     </View>
   );
