@@ -1,0 +1,42 @@
+{
+  "build": {
+    "master": {
+      "releaseChannel": "prod-v1"
+    },
+    "staging": {
+      "releaseChannel": "staging"
+    },
+    "development-simulator": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      }
+    },
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "preview2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "preview3": {
+      "developmentClient": true
+    }
+  },
+  "submit": {
+    "master": {
+      "android": {},
+      "ios": {
+        "appleId": "leanhforevo@gmail.com",
+        "appleTeamId": "G8ZLW97GRP"
+      }
+    }
+  },
+  "cli": {
+    "promptToConfigurePushNotifications": false
+  }
+}

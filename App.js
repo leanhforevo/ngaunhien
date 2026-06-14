@@ -1,20 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import Src from "./src";
+import {View,Text} from "react-native"
+import "expo-dev-client"
+// import mobileAds from 'react-native-google-mobile-ads';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+// mobileAds()
+//   .initialize()
+//   .then(adapterStatuses => {
+//     // Initialization complete!
+//   });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+// const App=()=>{
+//     return <View style={{flex:1,backgroundColor:'red',justifyContent:'center',alignItems:'center'}}>
+// <Text>Hello world</Text>
+//     </View>
+// }
+export default Src
+
