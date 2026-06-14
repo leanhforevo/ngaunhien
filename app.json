@@ -26,7 +26,8 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "react-native-google-mobile-ads"
+      "react-native-google-mobile-ads",
+      "expo-audio"
     ],
     "updates": {
       "url": "https://u.expo.dev/f493a012-2d49-4c10-b5bc-442df2e25829"

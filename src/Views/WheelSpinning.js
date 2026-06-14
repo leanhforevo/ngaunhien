@@ -9,7 +9,7 @@ import {
   Alert,
 } from "react-native";
 import WheelOfFortune from "react-native-wheel-of-fortune-dp";
-import { Audio } from "expo-av";
+import { useAudioPlayer } from "expo-audio";
 import { Icon } from "react-native-elements";
 import ConfettiCannon from "react-native-confetti-cannon";
 import Utils from "../Utils/utils";
@@ -48,6 +48,7 @@ const App = ({ navigation }) => {
     duration: 9500,
   });
   const [showConfetti, setShowConfetti] = useState(false);
+  const player = useAudioPlayer(require("../../assets/wheelSpining.wav"));
 
   var child = null;
   // const wheelOptions = ;
@@ -72,10 +73,12 @@ const App = ({ navigation }) => {
   const playSound = async () => {
     if (!configs?.sound) return null;
 
-    const { sound } = await Audio.Sound.createAsync(
-      require("../../assets/wheelSpining.wav")
-    );
-    await sound.playAsync();
+    try {
+      player.seekTo(0);
+      player.play();
+    } catch (error) {
+      console.log("Audio play error:", error);
+    }
   };
   const _evtSaveItem = async (value) => {
     try {
