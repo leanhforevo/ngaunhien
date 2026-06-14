@@ -28,6 +28,7 @@ const gameModes = [
   { name: "Lắc xúc xắc", screen: "DiceRoll", icon: "cube-outline", type: "ionicon" },
   { name: "Rút bài Tây", screen: "CardDraw", icon: "albums-outline", type: "ionicon" },
   { name: "Bốc thăm", screen: "LuckyDraw", icon: "gift-outline", type: "ionicon" },
+  { name: "Chọn ngón tay", screen: "FingerChooser", icon: "finger-print-outline", type: "ionicon" },
 ];
 
 const languageList = [
@@ -51,6 +52,7 @@ const translations = {
       DiceRoll: "Lắc xúc xắc",
       CardDraw: "Rút bài Tây",
       LuckyDraw: "Bốc thăm",
+      FingerChooser: "Chọn ngón tay",
     }
   },
   en: {
@@ -64,6 +66,7 @@ const translations = {
       DiceRoll: "Dice Roll",
       CardDraw: "Card Draw",
       LuckyDraw: "Lucky Draw",
+      FingerChooser: "Finger Chooser",
     }
   },
   de: {
@@ -77,6 +80,7 @@ const translations = {
       DiceRoll: "Würfelwurf",
       CardDraw: "Kartenziehen",
       LuckyDraw: "Glücksverlosung",
+      FingerChooser: "Finger-Wähler",
     }
   },
   fr: {
@@ -90,6 +94,7 @@ const translations = {
       DiceRoll: "Lancer de Dés",
       CardDraw: "Tirage de Cartes",
       LuckyDraw: "Tirage au Sort",
+      FingerChooser: "Sélecteur de Doigt",
     }
   },
   pt: {
@@ -103,6 +108,7 @@ const translations = {
       DiceRoll: "Lançar Dados",
       CardDraw: "Puxar Carta",
       LuckyDraw: "Sorteio",
+      FingerChooser: "Escolha de Dedo",
     }
   },
   hi: {
@@ -116,6 +122,7 @@ const translations = {
       DiceRoll: "पासा रोल",
       CardDraw: "कार्ड ड्रा",
       LuckyDraw: "लकी ड्रा",
+      FingerChooser: "फिंगर चॉइस",
     }
   }
 };

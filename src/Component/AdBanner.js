@@ -37,16 +37,20 @@ export const TopAd = React.memo(({ containerStyle }) => {
   );
 }, () => true);
 
-export const BottomAd = React.memo(({ containerStyle }) => {
+export const BottomAd = React.memo(({ containerStyle, size }) => {
+  const isSmall = size === "small";
+  const defaultHeight = isSmall ? 60 : 260;
+  const defaultSize = isSmall ? BannerAdSize.ANCHORED_ADAPTIVE_BANNER : BannerAdSize.MEDIUM_RECTANGLE;
+
   const defaultStyle = {
-    height: 260,
+    height: defaultHeight,
     marginBottom: getBottomSpace() || 10,
     justifyContent: 'center',
     alignItems: 'center',
   };
 
   const combinedStyle = {
-    height: 260,
+    height: defaultHeight,
     justifyContent: 'center',
     alignItems: 'center',
     ...(containerStyle || defaultStyle),
@@ -56,7 +60,7 @@ export const BottomAd = React.memo(({ containerStyle }) => {
     <View style={combinedStyle}>
       <BannerAd
         unitId={adUnitId}
-        size={BannerAdSize.MEDIUM_RECTANGLE}
+        size={defaultSize}
         requestOptions={{
           requestNonPersonalizedAdsOnly: true,
         }}

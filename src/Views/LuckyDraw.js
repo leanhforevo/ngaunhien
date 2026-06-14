@@ -209,9 +209,7 @@ export default function LuckyDraw({ navigation }) {
         </View>
         <View style={styles.backButton} />
       </View>
-
       <TopAd containerStyle={{ marginTop: 10, alignItems: 'center' }} />
-
       <View style={styles.content}>
         {/* Animated Pop-Up Card */}
         <Animated.View

@@ -192,9 +192,7 @@ export default function CardDraw({ navigation }) {
         </View>
         <View style={styles.backButton} />
       </View>
-
       <TopAd containerStyle={{ marginTop: 10, alignItems: 'center' }} />
-
       <View style={styles.content}>
         <Text style={styles.counterText}>Còn lại: {deck.length} / 52 lá</Text>
 

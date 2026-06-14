@@ -12,7 +12,7 @@ import {
   Platform,
 } from "react-native";
 import { useAudioPlayer } from "expo-audio";
-import { getBottomSpace } from "react-native-iphone-x-helper-2";
+import { getBottomSpace, getStatusBarHeight } from "react-native-iphone-x-helper-2";
 import Utils from "../Utils/utils";
 import Header from "../Component/Header";
 import { TopAd, BottomAd } from "../Component/AdBanner";
@@ -138,8 +138,7 @@ export default function CoinToss({ navigation }) {
         source={require("../../assets/background.jpeg")}
       />
       <Header title="Tung đồng xu" navigation={navigation} />
-
-      <TopAd containerStyle={{ marginTop: 10, alignItems: 'center' }} />
+      <TopAd containerStyle={{ marginTop: getStatusBarHeight(true) + 50, alignItems: 'center' }} />
 
       <View style={styles.content}>
         <View style={styles.coinPlayground}>
