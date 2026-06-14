@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "NgauNhien",
-    "slug": "NgauNhien",
+    "slug": "random-org",
     "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,7 +28,7 @@
       ]
     ],
     "updates": {
-      "url": "https://u.expo.dev/3289be1b-8739-422d-8f12-5d65873ddd8c"
+      "url": "https://u.expo.dev/f493a012-2d49-4c10-b5bc-442df2e25829"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -53,9 +53,10 @@
     "description": "",
     "extra": {
       "eas": {
-        "projectId": "3289be1b-8739-422d-8f12-5d65873ddd8c"
+        "projectId": "f493a012-2d49-4c10-b5bc-442df2e25829"
       }
     },
+    "owner": "leanhforevo",
     "plugins": [
       [
         "expo-build-properties",

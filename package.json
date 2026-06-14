@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "random-org",
+  "name": "NgauNhien",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
@@ -10,13 +10,14 @@
     "web": "expo start --web",
     "prebuild": "expo prebuild",
     "prebuild:clean": "expo prebuild --clean",
-    "eas-build:development": "eas build --profile development --platform all",
-    "eas-build:preview": "eas build --profile preview --platform all",
-    "eas-build:production": "eas build --profile production --platform all",
-    "eas-submit:android": "eas submit --platform android --profile production",
-    "eas-submit:ios": "eas submit --platform ios --profile production",
-    "eas-update:production": "eas update --branch prod-v1 --message \"production update\"",
-    "eas-update:staging": "eas update --branch staging --message \"staging update\""
+    "eas-build:development:ios": "npx eas-cli@latest build --profile development --platform ios",
+    "eas-build:development:android": "npx eas-cli@latest build --profile development --platform android",
+    "eas-build:preview": "npx eas-cli@latest build --profile preview --platform all",
+    "eas-build:production": "npx eas-cli@latest build --profile production --platform all",
+    "eas-submit:android": "npx eas-cli@latest submit --platform android --profile production",
+    "eas-submit:ios": "npx eas-cli@latest submit --platform ios --profile production",
+    "eas-update:production": "npx eas-cli@latest update --branch prod-v1 --message \"production update\"",
+    "eas-update:staging": "npx eas-cli@latest update --branch staging --message \"staging update\""
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",
