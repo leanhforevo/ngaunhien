@@ -27,7 +27,18 @@
         }
       ],
       "react-native-google-mobile-ads",
-      "expo-audio"
+      [
+        "expo-audio",
+        {
+          "enableBackgroundPlayback": false
+        }
+      ],
+      [
+        "expo-tracking-transparency",
+        {
+          "userTrackingPermission": "This identifier will be used to deliver personalized ads to you."
+        }
+      ]
     ],
     "updates": {
       "url": "https://u.expo.dev/f493a012-2d49-4c10-b5bc-442df2e25829"
